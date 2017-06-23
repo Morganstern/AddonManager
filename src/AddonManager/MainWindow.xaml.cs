@@ -14,22 +14,19 @@ namespace AddonManager
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Number of characters to seek past when parsing the download location of the zip file
+        const int hrefPadding = 11;
+
         List<string> addons = new List<string>(ConfigHandler.GetAddons());
 
         public MainWindow()
         {
             InitializeComponent();
-            Startup();
-        }
-
-        private void Startup()
-        {
             lstBox.ItemsSource = addons;
         }
 
         private void DownloadAddons()
         {
-            
             string download = "data-href";
             string content;
             char c = 'a';
@@ -41,7 +38,7 @@ namespace AddonManager
                 {
                     content = client.DownloadString(url);
                 }
-                int i = content.IndexOf(download) + 11;
+                int i = content.IndexOf(download) + hrefPadding;
 
                 StringBuilder sb = new StringBuilder();
                 while (true)
