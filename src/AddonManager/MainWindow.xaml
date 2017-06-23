@@ -1,0 +1,14 @@
+﻿<Window x:Class="AddonManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AddonManager"
+        mc:Ignorable="d"
+        Title="Addon Manager" Height="339.242" Width="303.381">
+    <Grid>
+        <ListBox x:Name="lstBox" HorizontalAlignment="Left" Height="238" VerticalAlignment="Top" Width="262" Margin="10,10,0,0"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="10,259,0,0" Click="btnUpdate_Click"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="182,259,0,0" Height="30" Click="btnClose_Click"/>
+    </Grid>
+</Window>
