@@ -1,0 +1,20 @@
+﻿<Window x:Class="AddonManager.AddDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AddonManager"
+        mc:Ignorable="d"
+        Title="Add an Addon" Height="252.101" Width="300">
+    <Grid>
+        <Label x:Name="lblSource" Content="Source:" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14"/>
+        <ComboBox x:Name="cbxSources" HorizontalAlignment="Left" VerticalAlignment="Top" Width="221" Margin="54,4,0,0" SelectionChanged="cbxSources_SelectionChanged"/>
+        <Button x:Name="btnAddAddon" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="15,168,0,0" Click="btnAddAddon_Click"/>
+        <Button x:Name="btnCancelAdd" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="185,168,0,0" Click="btnCancelAdd_Click"/>
+        <Label x:Name="lblName" Content="Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,55,0,0"/>
+        <Label Content="URL:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,104,0,0"/>
+        <TextBox x:Name="txtName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Margin="54,59,0,0" TextChanged="txtName_TextChanged"/>
+        <TextBox x:Name="txtURL" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Margin="54,107,0,0"/>
+        <Label x:Name="lblStatus" Content="" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="54,135,0,0" Width="221"/>
+    </Grid>
+</Window>

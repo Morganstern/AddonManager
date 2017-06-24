@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AddonManager"
         mc:Ignorable="d"
-        Title="Addon Manager" Height="339.242" Width="303.381">
-    <Grid>
-        <ListBox x:Name="lstBox" HorizontalAlignment="Left" Height="238" VerticalAlignment="Top" Width="262" Margin="10,10,0,0"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="10,259,0,0" Click="btnUpdate_Click"/>
-        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="182,259,0,0" Height="30" Click="btnClose_Click"/>
+        Title="Addon Manager" Height="300.281" Width="421.214">
+    <Grid Margin="0,0,2,0">
+        <ListBox x:Name="lstBox" HorizontalAlignment="Left" Height="238" VerticalAlignment="Top" Width="262" Margin="10,10,0,0" SelectionChanged="lstBox_SelectionChanged"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="299,183,0,0" Click="btnUpdate_Click" RenderTransformOrigin="2.22,-1.9"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="299,218,0,0" Height="30" Click="btnClose_Click"/>
+        <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="299,10,0,0" Click="btnAdd_Click"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="299,45,0,0" Click="btnRemove_Click" IsEnabled="False"/>
     </Grid>
 </Window>
