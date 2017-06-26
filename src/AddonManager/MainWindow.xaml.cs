@@ -9,11 +9,13 @@ namespace AddonManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Addon> addons = new List<Addon>(AddonHandler.GetAddons());
+        private List<Addon> addons = new List<Addon>();
+        public AddonHandler handler = new AddonHandler();
 
         public MainWindow()
         {
             InitializeComponent();
+            addons = handler.GetAddons();
             UpdateAddonList();
         }
 
@@ -31,7 +33,7 @@ namespace AddonManager
             btnUpdate.Content = "Updating";
             btnUpdate.IsEnabled = false;
 
-            AddonHandler.DownloadAddons(addons);
+            handler.DownloadAddons(addons);
 
             btnUpdate.Content = "Update";
             btnUpdate.IsEnabled = true;
@@ -39,6 +41,7 @@ namespace AddonManager
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            handler.Dispose();
             Close();
         }
 

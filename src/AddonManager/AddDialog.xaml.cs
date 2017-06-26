@@ -53,9 +53,12 @@ namespace AddonManager
 
         private void btnAddAddon_Click(object sender, RoutedEventArgs e)
         {
-            if(AddonHandler.AddAddon(txtName.Text, txtURL.Text))
+            using (var handler = new AddonHandler())
             {
-                lblStatus.Content = $"{txtName.Text} added";
+                if (handler.AddAddon(txtName.Text, txtURL.Text))
+                    lblStatus.Content = $"{txtName.Text} added";
+                else
+                    lblStatus.Content = $"Adding {txtName.Text} failed";
             }
         }
 
