@@ -27,6 +27,7 @@ namespace AddonManager
             sources.Add("Curse");
             sources.Add("ElvUI");
             cbxSources.ItemsSource = sources;
+            cbxSources.SelectedItem = "Curse";
         }
 
         private void cbxSources_SelectionChanged(object sender, SelectionChangedEventArgs e)
