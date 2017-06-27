@@ -8,6 +8,7 @@ Herein lies a list of enhancements that need to be made before release
 
 ### Configuration
 * Move config files to %APPDATA%
+* Check for WoW path on first run, prompt if it can't find WoW, then generate `config.ini`
 
 ### Data
 * Add ability to remove Addons from list
