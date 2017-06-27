@@ -21,6 +21,7 @@ Herein lies a list of enhancements that need to be made before release
 * Refactor workflow so it actually makes sense
 
 ### Deployment
+* Write bootstrap script for setting up dev environment
 * Build installer
 * Write documentation - install
 * Write documentation - usage
