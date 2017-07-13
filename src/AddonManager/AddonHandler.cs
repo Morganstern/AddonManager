@@ -7,6 +7,8 @@ using System.Net;
 using System.IO.Compression;
 using System.Text;
 using System;
+using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace AddonManager
 {
@@ -45,7 +47,7 @@ namespace AddonManager
                 if (name == a.Name || url == a.URL)
                     return false;
 
-            string version = "1.0.0"; //Placeholder until versioning is added
+            string version = "0.0.0"; //Placeholder until first update run
             string insert = $@"INSERT INTO ADDONS VALUES('{name}', '{version}', '{url}');";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnection);
             command.ExecuteNonQuery();
@@ -55,13 +57,21 @@ namespace AddonManager
 
         public void DownloadAddons(List<Addon> addons)
         {
-            foreach (var addon in addons)
+            try
             {
-                if (addon.Name == "ElvUI")
-                    DownloadElvUI();
-                else
-                    DownloadCurse(addon);
+                foreach (var addon in addons)
+                {
+                    if (addon.Name == "ElvUI")
+                        DownloadElvUI(addon);
+                    else
+                        DownloadCurse(addon);
+                }
             }
+            catch
+            {
+                throw new NotImplementedException();
+            }
+            MessageBox.Show("Updates completed successfully!");
         }
 
         private void DownloadCurse(Addon addon)
@@ -91,10 +101,22 @@ namespace AddonManager
             }
             url = sb.ToString();
 
+            string pattern = @"(\d+\.\d+\.\d+)";
+            Regex re = new Regex(pattern);
+            MatchCollection matches = re.Matches(url);
+            string version;
+            if (matches.Count > 0)
+                version = matches[0].ToString();
+            else
+                version = String.Empty;
+
+            if (SkipUpdate(addon, version))
+                return;
+
             GetAddonZip(url);
         }
 
-        private void DownloadElvUI()
+        private void DownloadElvUI(Addon addon)
         {
             string download = @"http://www.tukui.org/downloads/elvui-";
             string content;
@@ -118,6 +140,10 @@ namespace AddonManager
             }
             url = sb.ToString();
 
+            string version = url.Replace(download, String.Empty).Replace(".zip", String.Empty);
+            if (SkipUpdate(addon, version))
+                return;
+
             GetAddonZip(url);
         }
 
@@ -134,7 +160,7 @@ namespace AddonManager
             ZipArchive zip = ZipFile.Open("addon.zip", ZipArchiveMode.Read);
             foreach (ZipArchiveEntry entry in zip.Entries)
             {
-                if (entry.FullName.Contains(".gitlab") == false && entry.Name != "")
+                if (entry.FullName.Contains(".git") == false && entry.Name != "")
                 {
                     DirectoryInfo dir = new DirectoryInfo(entry.ToString());
                     string testPath = Path.GetDirectoryName(Path.Combine(wowpath, dir.ToString()));
@@ -149,6 +175,21 @@ namespace AddonManager
             zip.Dispose();
 
             File.Delete("addon.zip");
+        }
+
+        private bool SkipUpdate(Addon addon, string dl_version)
+        {
+            if (addon.Version != dl_version)
+            {
+                string sql = $"UPDATE addons SET version = \"{dl_version}\" WHERE name = \"{addon.Name}\"";
+                SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
+                command.ExecuteNonQuery();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public void Dispose()

@@ -12,5 +12,6 @@
         <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="299,218,0,0" Height="30" Click="btnClose_Click"/>
         <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="299,10,0,0" Click="btnAdd_Click"/>
         <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Height="30" Margin="299,45,0,0" Click="btnRemove_Click" IsEnabled="False"/>
+        <ProgressBar x:Name="prgBar" HorizontalAlignment="Left" Height="13" Margin="299,150,0,0" VerticalAlignment="Top" Width="90" IsIndeterminate="True"/>
     </Grid>
 </Window>

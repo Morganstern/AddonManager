@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using AddonManager.Models;
+using System.ComponentModel;
+using System;
 
 namespace AddonManager
 {
@@ -10,13 +12,19 @@ namespace AddonManager
     public partial class MainWindow : Window
     {
         private List<Addon> addons = new List<Addon>();
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+
         public AddonHandler handler = new AddonHandler();
 
         public MainWindow()
         {
             InitializeComponent();
+            prgBar.Visibility = Visibility.Hidden;
             addons = handler.GetAddons();
             UpdateAddonList();
+
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
         }
 
         public void UpdateAddonList()
@@ -32,11 +40,8 @@ namespace AddonManager
         {
             btnUpdate.Content = "Updating";
             btnUpdate.IsEnabled = false;
-
-            handler.DownloadAddons(addons);
-
-            btnUpdate.Content = "Update";
-            btnUpdate.IsEnabled = true;
+            prgBar.Visibility = Visibility.Visible;
+            worker.RunWorkerAsync();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -54,12 +59,26 @@ namespace AddonManager
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-
+            throw new NotImplementedException();
         }
 
         private void lstBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             btnRemove.IsEnabled = true;
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            handler.DownloadAddons(addons);
+        }
+
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            btnUpdate.Content = "Update";
+            btnUpdate.IsEnabled = true;
+            prgBar.Visibility = Visibility.Hidden;
+            addons = handler.GetAddons();
+            UpdateAddonList();
         }
     }
 }
