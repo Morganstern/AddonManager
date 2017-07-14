@@ -18,8 +18,20 @@ namespace AddonManager
 
         public AddonHandler()
         {
-            dbConnection = new SQLiteConnection("Data Source=addons.sqlite;Version=3;");
-            dbConnection.Open();
+            if (!File.Exists("addons.sqlite"))
+            {
+                SQLiteConnection.CreateFile("addons.sqlite");
+                dbConnection = new SQLiteConnection("Data Source=addons.sqlite;Version=3;");
+                dbConnection.Open();
+                string sql = "create table addons (name varchar(255), version varchar(255), url varchar(255)";
+                SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+                dbConnection = new SQLiteConnection("Data Source=addons.sqlite;Version=3;");
+                dbConnection.Open();
+            }
         }
 
         public void CloseHandler()
