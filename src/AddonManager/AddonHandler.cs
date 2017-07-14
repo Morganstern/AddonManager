@@ -67,21 +67,21 @@ namespace AddonManager
             return true;
         }
 
+        public void RemoveAddon(string selectedAddon)
+        {
+            string query = $"DELETE FROM addons WHERE name = \"{selectedAddon}\"";
+            SQLiteCommand command = new SQLiteCommand(query, dbConnection);
+            command.ExecuteNonQuery();
+        }
+
         public void DownloadAddons(List<Addon> addons)
         {
-            try
+            foreach (var addon in addons)
             {
-                foreach (var addon in addons)
-                {
-                    if (addon.Name == "ElvUI")
-                        DownloadElvUI(addon);
-                    else
-                        DownloadCurse(addon);
-                }
-            }
-            catch
-            {
-                throw new NotImplementedException();
+                if (addon.Name == "ElvUI")
+                    DownloadElvUI(addon);
+                else
+                    DownloadCurse(addon);
             }
             MessageBox.Show("Updates completed successfully!");
         }

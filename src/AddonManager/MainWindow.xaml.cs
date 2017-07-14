@@ -3,6 +3,7 @@ using System.Windows;
 using AddonManager.Models;
 using System.ComponentModel;
 using System;
+using System.IO;
 
 namespace AddonManager
 {
@@ -11,14 +12,20 @@ namespace AddonManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Addon> addons = new List<Addon>();
         private readonly BackgroundWorker worker = new BackgroundWorker();
 
         public AddonHandler handler = new AddonHandler();
+        public List<Addon> addons = new List<Addon>();
 
         public MainWindow()
         {
             InitializeComponent();
+
+            if (!File.Exists("config.ini"))
+            {
+                ConfigHandler.CreateConfig();
+            }
+
             prgBar.Visibility = Visibility.Hidden;
             addons = handler.GetAddons();
             UpdateAddonList();
@@ -59,7 +66,12 @@ namespace AddonManager
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            string selectedAddon = lstBox.SelectedItem.ToString();
+            handler.RemoveAddon(selectedAddon);
+            addons = handler.GetAddons();
+            UpdateAddonList();
+            lstBox.SelectedIndex = -1;
+            btnRemove.IsEnabled = false;
         }
 
         private void lstBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
