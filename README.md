@@ -8,7 +8,4 @@ Currently in development, it works but is very basic for now. There is no instal
 * Clone repo `git clone https://github.com/3vbo/addonmanager.git`
 * Open `AddonManager.sln` in Visual Studio 2017
 * Build the project
-* Create `config.ini` and `addons.sqlite` in the \bin\Debug\x64\ folder after building the project
-  * `config.ini` can be copied from the src folder
-  * `addons.sqlite` needs to be an empty file
 * Run the app through Visual Studio in Debug mode
