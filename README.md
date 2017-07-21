@@ -2,7 +2,7 @@
 
 Download, update and manage your addons. Now with 100% less Curse client!
 
-Currently in development, it works but is very basic for now. There is no installer and config files need to created by hand. Requires .NET 4.6 or higher.
+Currently in development, it works but is very basic for now. There is no installer yet, so it needs to be built by Visual Studio for now. Requires .NET 4.6 or higher.
 
 ## Install Instructions (for now)
 * Clone repo `git clone https://github.com/3vbo/addonmanager.git`
