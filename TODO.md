@@ -5,16 +5,17 @@ Herein lies a list of enhancements that need to be made before release
 * Refactor sources from a list of hardcoded strings to something less amateur
 * Add WowInterface
 * Add Git (Github and Gitlab)
+* ~~Add ElvUI~~
 
 ### Configuration
 * Move config files to %APPDATA%
-* Check for WoW path on first run, prompt if it can't find WoW, then generate `config.ini`
+* ~~Check for WoW path on first run, prompt if it can't find WoW, then generate `config.ini`~~
 
 ### Data
-* Add ability to remove Addons from list
-* Implement version checking for Addons
+* ~~Add ability to remove Addons from list~~ Implement uninstalling Addons, not just removing from the database
+* ~~Implement version checking for Addons
   * Version checking for each source
-  * Only update addons if there is a new version
+  * Only update addons if there is a new version~~
 
 ### UI
 * Make it less ugly
