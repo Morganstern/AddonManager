@@ -13,9 +13,9 @@ Herein lies a list of enhancements that need to be made before release
 
 ### Data
 * ~~Add ability to remove Addons from list~~ Implement uninstalling Addons, not just removing from the database
-* ~~Implement version checking for Addons
-  * Version checking for each source
-  * Only update addons if there is a new version~~
+* ~~Implement version checking for Addons~~
+  * ~~Version checking for each source~~
+  * ~~Only update addons if there is a new version~~
 
 ### UI
 * Make it less ugly
