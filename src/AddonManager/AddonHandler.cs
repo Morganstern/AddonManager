@@ -23,7 +23,7 @@ namespace AddonManager
                 SQLiteConnection.CreateFile("addons.sqlite");
                 dbConnection = new SQLiteConnection("Data Source=addons.sqlite;Version=3;");
                 dbConnection.Open();
-                string sql = "create table addons (name varchar(255), version varchar(255), url varchar(255)";
+                string sql = "create table addons (name varchar(255), version varchar(255), url varchar(255));";
                 SQLiteCommand command = new SQLiteCommand(sql, dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -96,10 +96,19 @@ namespace AddonManager
             char c = 'a';
 
             string url = $@"https://mods.curse.com/addons/wow/{addon.URL}/download";
-            using (WebClient client = new WebClient())
+            try
             {
-                content = client.DownloadString(url);
+                using (WebClient client = new WebClient())
+                {
+                    content = client.DownloadString(url);
+                }
             }
+            catch
+            {
+                MessageBox.Show($"{addon.Name} failed to download, continuing", "Addon Manager");
+                return;
+            }
+
             int i = content.IndexOf(download) + hrefPadding;
 
             StringBuilder sb = new StringBuilder();
@@ -125,21 +134,31 @@ namespace AddonManager
             if (SkipUpdate(addon, version))
                 return;
 
-            GetAddonZip(url);
+            GetAddonZip(url, addon.Name);
         }
 
         private void DownloadElvUI(Addon addon)
         {
-            string download = @"http://www.tukui.org/downloads/elvui-";
+            string ziptest = @"https://www.tukui.org/downloads/elvui-";
+            string download = @"/downloads/elvui-";
             string content;
             char c = 'a';
 
-            string url = $@"http://www.tukui.org/dl.php";
-            using (WebClient client = new WebClient())
+            string url = $@"https://www.tukui.org/welcome.php";
+            try
             {
-                content = client.DownloadString(url);
+                using (WebClient client = new WebClient())
+                {
+                    content = client.DownloadString(url);
+                }
             }
-            int i = content.IndexOf(download);
+            catch
+            {
+                MessageBox.Show($"{addon.Name} failed to download, continuing", "Addon Manager");
+                return;
+            }
+
+            int i = content.IndexOf(download) + download.Length;
 
             StringBuilder sb = new StringBuilder();
             while (true)
@@ -150,23 +169,31 @@ namespace AddonManager
                 sb.Append(c);
                 i++;
             }
-            url = sb.ToString();
+            url = ziptest + sb.ToString();
 
             string version = url.Replace(download, String.Empty).Replace(".zip", String.Empty);
             if (SkipUpdate(addon, version))
                 return;
 
-            GetAddonZip(url);
+            GetAddonZip(url, addon.Name);
         }
 
-        public void GetAddonZip(string url)
+        public void GetAddonZip(string url, string name)
         {
             IniData config = ConfigHandler.GetConfig();
             string wowpath = config["DIRECTORY"]["WowInstall"].Replace("\"", "");
 
-            using (var client = new WebClient())
+            try
             {
-                client.DownloadFile(url, "addon.zip");
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(url, "addon.zip");
+                }
+            }
+            catch
+            {
+                MessageBox.Show($"The zip file for {name} failed to download, continuing", "Addon Manager");
+                return;
             }
 
             ZipArchive zip = ZipFile.Open("addon.zip", ZipArchiveMode.Read);
