@@ -11,12 +11,14 @@ namespace AddonManager.Models
         public string Name { get; set; }
         public string Version { get; set; }
         public string URL { get; set; }
+        public string TopLevelDirs { get; set; }
 
-        public Addon(string _name, string _version, string _url)
+        public Addon(string _name, string _version, string _url, string _topLevelDirs)
         {
             Name = _name;
             Version = _version;
             URL = _url;
+            TopLevelDirs = _topLevelDirs;
         }
     }
 }
