@@ -57,21 +57,26 @@ namespace AddonManager
             return addons;
         }
 
-        public bool AddAddon(string name, string url)
+        public string AddAddon(string name, string url, string source)
         {
             List<Addon> currentAddons = new List<Addon>();
             currentAddons = GetAddons();
 
             foreach (var a in currentAddons)
                 if (name == a.Name || url == a.URL)
-                    return false;
+                    return $"{name} is already installed";
+
+            if(!TestURL(url, source))
+            {
+                return "failed"; // Logic for failure is in calling function
+            }
 
             string version = "0.0.0"; //Placeholder until first update run
             string insert = $@"INSERT INTO ADDONS VALUES('{name}', '{version}', '{url}', '');";
             SQLiteCommand command = new SQLiteCommand(insert, dbConnection);
             command.ExecuteNonQuery();
 
-            return true;
+            return $"{name} added";
         }
 
         public void RemoveAddon(string selectedAddon)
@@ -92,8 +97,13 @@ namespace AddonManager
                 if (a.Name == selectedAddon)
                 {
                     List<string> dirs = a.TopLevelDirs.Split(',').ToList();
+
+                    if (dirs.Count == 0)
+                        return;
+
                     foreach (var dir in dirs)
-                        Directory.Delete(Path.Combine(wowpath, dir), true);
+                        if (Directory.Exists(Path.Combine(wowpath, dir)))
+                            Directory.Delete(Path.Combine(wowpath, dir), true);
                 }
             }
         }
@@ -119,7 +129,8 @@ namespace AddonManager
             string content;
             char c = 'a';
 
-            string url = $@"https://mods.curse.com/addons/wow/{addon.URL}/download";
+            string url = addon.URL + "/download";
+
             try
             {
                 using (WebClient client = new WebClient())
@@ -129,11 +140,12 @@ namespace AddonManager
             }
             catch
             {
-                MessageBox.Show($"{addon.Name} failed to download, continuing", "Addon Manager");
+                MessageBox.Show($"{addon.Name} failed to download, skipping to next addon", "Addon Manager");
                 return;
             }
 
             int i = content.IndexOf(download) + hrefPadding;
+            string test = content.Substring(i);
 
             StringBuilder sb = new StringBuilder();
             while (true)
@@ -204,8 +216,8 @@ namespace AddonManager
 
         public void GetAddonZip(string url, string name)
         {
-            // Get path to WoW
-            
+            if (File.Exists("addon.zip"))
+                File.Delete("addon.zip");
 
             try
             {
@@ -277,6 +289,30 @@ namespace AddonManager
             else
             {
                 return true;
+            }
+        }
+
+        private bool TestURL(string url, string source)
+        {
+            if (source == "ElvUI")
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                    request.Method = "HEAD";
+                    request.Timeout = 5000;
+                    HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                    response.Close();
+                    return (response.StatusCode == HttpStatusCode.OK && response.ResponseUri.AbsolutePath != @"error/");
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 

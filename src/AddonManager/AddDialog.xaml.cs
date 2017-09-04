@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AddonManager
 {
@@ -36,12 +27,14 @@ namespace AddonManager
             if ((string)cbxSources.SelectedItem == "ElvUI")
             {
                 txtName.Text = "ElvUI";
-                txtURL.Text = "ElvUI";
+                txtURL.Text = "https://www.tukui.org/download.php?ui=elvui";
+                txtURL.IsEnabled = false;
             }
             else
             {
                 txtName.Text = String.Empty;
-                txtURL.Text = String.Empty;
+                txtURL.Text = "https://mods.curse.com/addons/wow/";
+                txtURL.IsEnabled = true;
             }
         }
 
@@ -50,19 +43,26 @@ namespace AddonManager
             string entry = txtName.Text;
             entry = entry.Replace(' ', '-');
             entry = entry.ToLower();
-            txtURL.Text = entry;
+            txtURL.Text = "https://mods.curse.com/addons/wow/" + entry;
         }
 
         private void btnAddAddon_Click(object sender, RoutedEventArgs e)
         {
             using (var handler = new AddonHandler())
             {
-                if (handler.AddAddon(txtName.Text, txtURL.Text))
-                    lblStatus.Content = $"{txtName.Text} added";
+                string content = handler.AddAddon(txtName.Text, txtURL.Text, (string)cbxSources.SelectedItem);
+                if (content == "failed")
+                {
+                    lblStatus.Content = $"Press Submit to try checking the URL again";
+                    MessageBox.Show($"Url for {txtName.Text} is incorrect, click OK to go to curse.com and find the URL manually");
+                    System.Diagnostics.Process.Start($"https://mods.curse.com/search?game-slug=wow&search={txtName.Text}");
+                }
                 else
-                    lblStatus.Content = $"Adding {txtName.Text} failed";
+                {
+                    lblStatus.Content = content;
+                    btnCancelAdd.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                }
             }
-            btnCancelAdd.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
         private void btnCancelAdd_Click(object sender, RoutedEventArgs e)
