@@ -18,6 +18,7 @@ Herein lies a list of enhancements that need to be made before release
   * ~~Version checking for each source~~
   * ~~Only update addons if there is a new version~~
 * ~~Checks addon URLs before adding to db~~
+* Implement editing addons after they've been added
 
 ### UI
 * Make it less ugly
