@@ -8,4 +8,4 @@ Currently in development. There is no installer yet, so it needs to be built by 
 * Clone repo `git clone https://github.com/3vbo/addonmanager.git`
 * Open `AddonManager.sln` in Visual Studio 2017
 * Build the project
-* Run the app through Visual Studio in Debug mode
+* Run the compiled application
