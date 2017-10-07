@@ -19,9 +19,10 @@ Herein lies a list of enhancements that need to be made before release
   * ~~Only update addons if there is a new version~~
 * ~~Checks addon URLs before adding to db~~
 * Implement editing addons after they've been added
+* Implement entity framework instead of raw SQL
 
 ### UI
-* Make it less ugly
+* Make it interactive interface, pretty
 * Make the Add popup more intuitive
 * Refactor workflow so it actually makes sense
 
